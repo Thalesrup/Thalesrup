@@ -1,8 +1,8 @@
 name: Generate Snake
 
 on:
-  schedule: # execute every 12 hours
-    - cron: "0 */12 * * *"
+  schedule:
+    - cron: "0 */12 * * *" # Executa a cada 12 horas
   workflow_dispatch:
 
 jobs:
@@ -10,20 +10,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository content
       - name: Checkout
         uses: actions/checkout@v2
 
-      # Generate the snake game from a GitHub user contributions graph
-      # Generate a snake game from a github user contributions graph, output a svg animation at a github page
-      - name: Generate Snake
-        uses: Platane/snk@v2
+      - name: Generate Snake Animation
+        uses: Platane/snk-action@v0.0.6
         with:
-          github_user_name: Thalesrup # Substitua pelo seu nome de usuário
-          outputs: dist/snake.svg
+          github_user_name: Thalesrup
+          gif_out_path: dist/snake.gif
+          svg_out_path: dist/snake.svg
 
-      - name: Push Snake Game to the repository
+      - name: Push Snake to the repository
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: dist
+          publish_dir: ./dist
+
