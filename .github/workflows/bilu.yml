@@ -1,15 +1,16 @@
 name: Jogo da Coblinha
 
 on:
-  schedule: # Executa a cada 6 horas
-    - cron: "0 */6 * * *"
-  push: # Executa quando há novos commits no repositório
+  pull_request:
+    types:
+      - closed
     branches:
-      - master
+      - '*'  # Aciona em qualquer branch
   workflow_dispatch: # Permite execução manual do workflow
 
 jobs:
   build:
+    if: github.event.pull_request.merged == true # Somente se o PR foi mesclado
     runs-on: ubuntu-latest
 
     steps:
@@ -28,3 +29,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./dist
+
